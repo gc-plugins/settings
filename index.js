@@ -9,13 +9,6 @@ exports.init = ({config}) => {
 };
 
 exports.process = ({keyword, term, stream}) => {
-    // Force no results for an empty string.
-    if (/^\s*$/.test(term)) {
-        stream.write(undefined);
-        stream.end();
-        return;
-    }
-
     switch (keyword) {
         case 'quit':
         case 'exit':
