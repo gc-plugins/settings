@@ -20,6 +20,17 @@ exports.process = ({keyword, term, stream}) => {
             });
             stream.end();
             break;
+        case 'set':
+            stream.write({
+                key: 'set|loginItem',
+                title: 'Launch Ground Control at login',
+                description: undefined,
+                icon: app.getLoginItemSettings().openAtLogin?
+                    encodeURI('file://' + path.resolve(__dirname, 'img', 'checked.svg')):
+                    encodeURI('file://' + path.resolve(__dirname, 'img', 'unchecked.svg'))
+            });
+            stream.end();
+            break;
     }
 };
 
@@ -30,6 +41,14 @@ exports.execute = ({key}) => {
             case 'exit':
                 app.quit();
                 break;
+            case 'set|loginItem':
+                if (app.getLoginItemSettings().openAtLogin) {
+                    app.setLoginItemSettings({openAtLogin: false});
+                }
+                else {
+                    app.setLoginItemSettings({openAtLogin: true});
+                }
+                break;
         }
 
         resolve();
@@ -38,5 +57,6 @@ exports.execute = ({key}) => {
 
 exports.keyword = [
     'quit',
-    'exit'
+    'exit',
+    'set'
 ];
